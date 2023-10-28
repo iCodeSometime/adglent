@@ -165,4 +165,8 @@ pub fn collect_test_functions(module: TestModule) -> TestSuite {
 
 @target(erlang)
 @external(erlang, "erlang", "apply")
-fn apply(module module: Atom, function function: Atom, args args: List(Dynamic)) -> Dynamic
+fn apply(
+  module module: Atom,
+  function function: Atom,
+  args args: List(Dynamic),
+) -> Dynamic
