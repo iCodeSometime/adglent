@@ -1,8 +1,24 @@
 import simplifile.{FileError}
 import gleam/list
+import gleam/string
+import showtime
 
-pub type Example {
-  Example(input: String, answer: Int)
+pub type Example(a) {
+  Example(input: String, answer: a)
+}
+
+pub fn inspect(value: a) -> String {
+  let inspected_value = string.inspect(value)
+  case
+    inspected_value
+    |> string.starts_with("\"")
+  {
+    True ->
+      inspected_value
+      |> string.drop_left(1)
+      |> string.drop_right(1)
+    False -> inspected_value
+  }
 }
 
 pub fn get_input(day: String) -> Result(String, FileError) {

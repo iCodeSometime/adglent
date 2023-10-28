@@ -12,6 +12,21 @@ pub fn get_string(
   |> decode(key_path, dynamic.string)
 }
 
+pub fn get_bool(
+  toml_content: String,
+  key_path: List(String),
+) -> Result(Bool, Nil) {
+  use toml <- result.try(parse(toml_content))
+  toml
+  |> decode(key_path, dynamic.string)
+  |> result.map(fn(bool_str) {
+    case bool_str {
+      "True" | "true" -> True
+      _ -> False
+    }
+  })
+}
+
 fn decode(
   from toml: Toml,
   get key_path: List(String),

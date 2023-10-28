@@ -1,13 +1,15 @@
 name = "adglent"
-version = "0.1.0"
+version = "1.0.0-rc1"
 
-# Fill out these fields if you intend to generate HTML documentation or publish
-# your project to the Hex package manager.
-#
-# description = ""
-# licences = ["Apache-2.0"]
-# repository = { type = "github", user = "username", repo = "project" }
-# links = [{ title = "Website", href = "https://gleam.run" }]
+description = "Advent of code helper - automating setup of tests, solution template and problem input"
+licences = ["Apache-2.0"]
+repository = { type = "github", user = "JohnBjrk", repo = "adglent" }
+
+internal_modules = [
+  "adglent/priv",
+  "adglent/priv/*",
+  "showtime/internal/*",
+]
 
 [dependencies]
 gleam_stdlib = "~> 0.31"
@@ -15,6 +17,12 @@ simplifile = "~> 0.1"
 gleam_hackney = "~> 1.1"
 gleam_http = "~> 3.5"
 tomerl = "~> 0.5"
+gleam_erlang = "~> 0.22"
+gleam_otp = "== 0.7.0"
+gleam_community_ansi = "~> 1.1"
+glint = "~> 0.12"
+gap = "~> 0.7"
+snag = "~> 0.2"
 
 [dev-dependencies]
 gleeunit = "~> 0.10"

@@ -1,19 +1,24 @@
 import priv/prompt
 import priv/template
+import priv/templates/test_main
 import priv/errors
+import priv/toml
 import simplifile
 import gleam/string
 import gleam/list
 import gleam/result
+import gleam/bool
 
 const aoc_toml_template = "
 year = \"{{ year }}\"
 session = \"{{ session }}\"
+showtime = \"{{ showtime }}\"
 "
 
 pub fn main() {
   let year = prompt.value("Year", "2023", False)
   let session = prompt.value("Session Cookie", "", False)
+  let use_showtime = prompt.confirm("Use showtime", False)
 
   let aoc_toml_file = "aoc.toml"
   let overwrite = case simplifile.create_file(aoc_toml_file) {
@@ -26,7 +31,11 @@ pub fn main() {
     True -> {
       template.render(
         aoc_toml_template,
-        [#("year", year), #("session", session)],
+        [
+          #("year", year),
+          #("session", session),
+          #("showtime", bool.to_string(use_showtime)),
+        ],
       )
       |> simplifile.write(aoc_toml_file)
       |> errors.map_messages(
@@ -38,6 +47,34 @@ pub fn main() {
     False -> Ok("aoc.toml - skipped")
   }
   |> errors.print_result
+
+  let gleam_toml =
+    simplifile.read("gleam.toml")
+    |> errors.map_error("Could not read gleam.toml")
+    |> errors.print_error
+    |> errors.assert_ok
+
+  let name =
+    toml.get_string(gleam_toml, ["name"])
+    |> errors.map_error("Could not read \"name\" from gleam.toml")
+    |> errors.print_error
+    |> errors.assert_ok
+
+  let test_main_file = "test/" <> name <> "_test.gleam"
+
+  case use_showtime {
+    True -> {
+      template.render(test_main.template, [])
+      |> simplifile.write(test_main_file)
+      |> errors.map_messages(
+        "Wrote " <> test_main_file,
+        "Could not write to " <> test_main_file,
+      )
+    }
+    False -> Ok("Using existing (gleeunit) " <> test_main_file)
+  }
+  |> errors.print_result
+  |> errors.assert_ok
 
   case simplifile.is_file(".gitignore") {
     True -> {

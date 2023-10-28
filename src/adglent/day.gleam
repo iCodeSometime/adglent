@@ -2,75 +2,13 @@ import adglent
 import gleam/string
 import gleam/result
 import priv/template
+import priv/templates/testfile_gleeunit
+import priv/templates/testfile_showtime
+import priv/templates/solution
 import priv/toml
 import priv/aoc_client
 import priv/errors
 import simplifile
-
-const testfile_template = "
-import gleam/list
-import gleeunit/should
-import adglent.{Example}
-import day{{ day }}/solve
-
-/// Add examples for part 1 here:
-/// ```gleam
-///const part1_examples: List(Example) = [Example(\"some input\", 0)]
-/// ```
-const part1_examples: List(Example) = []
-
-/// Add examples for part 2 here:
-/// ```gleam
-///const part2_examples: List(Example) = [Example(\"some input\", 0)]
-/// ```
-const part2_examples: List(Example) = []
-
-pub fn part1_test() {
-  part1_examples
-  |> should.not_equal([])
-  use example <- list.map(part1_examples)
-  solve.part1(example.input)
-  |> should.equal(example.answer)
-}
-
-pub fn part2_test() {
-  part2_examples
-  |> should.not_equal([])
-  use example <- list.map(part2_examples)
-  solve.part2(example.input)
-  |> should.equal(example.answer)
-}
-
-"
-
-const solution_template = "
-import adglent.{First, Second}
-import gleam/int
-import gleam/io
-
-pub fn part1(input: String) -> Int {
-  todo as \"Implement solution to part 1\"
-}
-
-pub fn part2(input: String) -> Int {
-  todo as \"Implement solution to part 2\"
-}
-
-pub fn main() {
-  let assert Ok(part) = adglent.get_part()
-  let assert Ok(input) = adglent.get_input(\"{{ day }}\")
-  case part {
-    First ->
-      part1(input)
-      |> int.to_string
-      |> io.println
-    Second ->
-      part2(input)
-      |> int.to_string
-      |> io.println
-  }
-}
-"
 
 pub fn main() {
   let day =
@@ -81,36 +19,6 @@ pub fn main() {
     |> errors.map_error("Error when parsing command args")
     |> errors.print_error
     |> errors.assert_ok
-
-  let test_folder = adglent.get_test_folder(day)
-  let test_file = test_folder <> "/day" <> day <> "_test.gleam"
-
-  simplifile.create_directory_all(test_folder)
-  |> errors.map_error("Could not create folder \"" <> test_folder <> "\"")
-  |> errors.print_error
-  |> errors.assert_ok
-
-  template.render(testfile_template, [#("day", day)])
-  |> create_file_if_not_present(test_file)
-  |> errors.print_result
-  |> errors.assert_ok
-
-  let solutions_folder = "src/day" <> day
-  let solution_file = solutions_folder <> "/solve.gleam"
-
-  simplifile.create_directory_all(solutions_folder)
-  |> errors.map_error("Could not create folder \"" <> solutions_folder <> "\"")
-  |> errors.print_error
-  |> errors.assert_ok
-
-  template.render(solution_template, [#("day", day)])
-  |> create_file_if_not_present(solution_file)
-  |> errors.print_result
-  |> errors.assert_ok
-
-  create_file_if_not_present("input.txt", solutions_folder <> "/.gitignore")
-  |> errors.print_result
-  |> errors.assert_ok
 
   let aoc_toml =
     simplifile.read("aoc.toml")
@@ -128,6 +36,47 @@ pub fn main() {
     |> errors.map_error("Could not read \"session\" from aoc.toml")
     |> errors.print_error
     |> errors.assert_ok
+  let showtime =
+    toml.get_bool(aoc_toml, ["showtime"])
+    |> errors.map_error("Could not read \"showtime\" from aoc.toml")
+    |> errors.print_error
+    |> errors.assert_ok
+
+  let test_folder = adglent.get_test_folder(day)
+  let test_file = test_folder <> "/day" <> day <> "_test.gleam"
+
+  simplifile.create_directory_all(test_folder)
+  |> errors.map_error("Could not create folder \"" <> test_folder <> "\"")
+  |> errors.print_error
+  |> errors.assert_ok
+
+  let testfile_template = case showtime {
+    True -> testfile_showtime.template
+    False -> testfile_gleeunit.template
+  }
+
+  template.render(testfile_template, [#("day", day)])
+  |> create_file_if_not_present(test_file)
+  |> errors.print_result
+  |> errors.assert_ok
+
+  let solutions_folder = "src/day" <> day
+  let solution_file = solutions_folder <> "/solve.gleam"
+
+  simplifile.create_directory_all(solutions_folder)
+  |> errors.map_error("Could not create folder \"" <> solutions_folder <> "\"")
+  |> errors.print_error
+  |> errors.assert_ok
+
+  template.render(solution.template, [#("day", day)])
+  |> create_file_if_not_present(solution_file)
+  |> errors.print_result
+  |> errors.assert_ok
+
+  create_file_if_not_present("input.txt", solutions_folder <> "/.gitignore")
+  |> errors.print_result
+  |> errors.assert_ok
+
   let input =
     aoc_client.get_input(year, day, session)
     |> errors.map_error("Error when fetching input")
