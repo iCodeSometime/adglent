@@ -1,15 +1,15 @@
 @target(erlang)
 import gleam/list
 @target(erlang)
-import gleam/erlang/atom.{Atom}
+import gleam/erlang/atom.{type Atom}
 @target(erlang)
 import showtime/internal/common/test_suite.{
-  EndTest, StartTest, TestEventHandler, TestSuite,
+  type TestEventHandler, type TestSuite, EndTest, StartTest,
 }
 @target(erlang)
-import showtime/internal/common/test_result.{TestResult}
+import showtime/internal/common/test_result.{type TestResult}
 @target(erlang)
-import showtime/internal/common/cli.{Capture}
+import showtime/internal/common/cli.{type Capture}
 
 // Runs all tests in a test suite
 @target(erlang)

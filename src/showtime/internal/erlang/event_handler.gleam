@@ -3,11 +3,11 @@ import gleam/io
 @target(erlang)
 import gleam/otp/actor.{Continue, Stop}
 @target(erlang)
-import gleam/erlang/process.{Normal, Subject}
+import gleam/erlang/process.{type Subject, Normal}
 @target(erlang)
 import gleam/map
 @target(erlang)
-import showtime/internal/common/test_suite.{EndTestRun, TestEvent}
+import showtime/internal/common/test_suite.{type TestEvent, EndTestRun}
 @target(erlang)
 import showtime/internal/common/common_event_handler.{
   Finished, HandlerState, NotStarted, handle_event,

@@ -1,4 +1,4 @@
-import glint.{CommandInput, flag}
+import glint.{type CommandInput, flag}
 import glint/flag
 import glint/flag/constraint.{one_of}
 import gleam/result

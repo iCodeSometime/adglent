@@ -1,7 +1,7 @@
-import gleam/map.{Map}
+import gleam/map.{type Map}
 import showtime/internal/common/test_suite.{
-  CompletedTestRun, EndTest, EndTestRun, EndTestSuite, OngoingTestRun, StartTest,
-  StartTestRun, StartTestSuite, TestEvent, TestRun,
+  type TestEvent, type TestRun, CompletedTestRun, EndTest, EndTestRun,
+  EndTestSuite, OngoingTestRun, StartTest, StartTestRun, StartTestSuite,
 }
 
 pub type TestState {

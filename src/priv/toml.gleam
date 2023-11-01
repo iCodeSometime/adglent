@@ -1,4 +1,4 @@
-import gleam/dynamic.{Decoder, Dynamic}
+import gleam/dynamic.{type Decoder, type Dynamic}
 import gleam/result
 
 pub type Toml

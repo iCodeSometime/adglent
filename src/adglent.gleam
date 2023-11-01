@@ -1,4 +1,4 @@
-import simplifile.{FileError}
+import simplifile.{type FileError}
 import gleam/list
 import gleam/string
 

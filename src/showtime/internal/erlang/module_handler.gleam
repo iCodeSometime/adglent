@@ -4,11 +4,11 @@ import gleam/otp/actor.{Continue}
 import gleam/erlang/process
 @target(erlang)
 import showtime/internal/common/test_suite.{
-  EndTestSuite, StartTestSuite, TestEventHandler, TestFunctionCollector,
-  TestModule, TestRunner,
+  type TestEventHandler, type TestFunctionCollector, type TestModule,
+  type TestRunner, EndTestSuite, StartTestSuite,
 }
 @target(erlang)
-import showtime/internal/common/cli.{Capture}
+import showtime/internal/common/cli.{type Capture}
 @target(erlang)
 import gleam/option.{None}
 

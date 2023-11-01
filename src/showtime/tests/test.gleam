@@ -1,5 +1,5 @@
 import showtime/tests/should
-import showtime/tests/meta.{Meta}
+import showtime/tests/meta.{type Meta}
 import gleam/io
 
 pub type Test {

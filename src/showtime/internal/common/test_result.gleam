@@ -1,5 +1,5 @@
-import gleam/dynamic.{Dynamic}
-import gleam/map.{Map}
+import gleam/dynamic.{type Dynamic}
+import gleam/map.{type Map}
 
 // These are all the types used for test-results
 // NOTE: These are heavily used in the erlang/js ffi:s

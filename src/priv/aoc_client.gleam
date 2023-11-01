@@ -1,5 +1,5 @@
 import gleam/result.{try}
-import gleam/hackney.{Error, Other}
+import gleam/hackney.{type Error, Error, Other}
 import gleam/http/request
 import gleam/dynamic
 import gleam/int

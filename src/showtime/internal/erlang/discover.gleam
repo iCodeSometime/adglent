@@ -1,7 +1,7 @@
 @target(erlang)
 import gleam/io
 @target(erlang)
-import gleam/dynamic.{Dynamic}
+import gleam/dynamic.{type Dynamic}
 @target(erlang)
 import gleam/list
 @target(erlang)
@@ -9,16 +9,17 @@ import gleam/string
 @target(erlang)
 import gleam/int
 @target(erlang)
-import gleam/option.{None, Option, Some}
+import gleam/option.{type Option, None, Some}
 @target(erlang)
 import gleam/result
 @target(erlang)
 import gleam/erlang/file
 @target(erlang)
-import gleam/erlang/atom.{Atom}
+import gleam/erlang/atom.{type Atom}
 @target(erlang)
 import showtime/internal/common/test_suite.{
-  TestFunction, TestModule, TestModuleHandler, TestSuite,
+  type TestModule, type TestModuleHandler, type TestSuite, TestFunction,
+  TestModule, TestSuite,
 }
 
 // Module collector for erlang

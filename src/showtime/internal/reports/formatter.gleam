@@ -2,16 +2,16 @@ import gleam/io
 import gleam/int
 import gleam/list
 import gleam/string
-import gleam/option.{None, Option, Some}
-import gleam/map.{Map}
-import gleam/dynamic.{Dynamic}
+import gleam/option.{type Option, None, Some}
+import gleam/map.{type Map}
+import gleam/dynamic.{type Dynamic}
 import showtime/internal/common/test_result.{
-  AssertEqual, AssertMatch, AssertNotEqual, Expected, Expression,
-  GenericException, GleamAssert, GleamError, GleamErrorDetail, Ignored,
-  LetAssert, Pattern, ReasonDetail, Trace, TraceModule, Value,
+  type GleamErrorDetail, type ReasonDetail, type Trace, AssertEqual, AssertMatch,
+  AssertNotEqual, Expected, Expression, GenericException, GleamAssert,
+  GleamError, Ignored, LetAssert, Pattern, Trace, TraceModule, Value,
 }
-import showtime/internal/common/test_suite.{CompletedTestRun, TestRun}
-import showtime/tests/should.{Assertion, Eq, Fail, IsError, IsOk, NotEq}
+import showtime/internal/common/test_suite.{type TestRun, CompletedTestRun}
+import showtime/tests/should.{type Assertion, Eq, Fail, IsError, IsOk, NotEq}
 import showtime/internal/reports/styles.{
   error_style, expected_highlight, failed_style, function_style, got_highlight,
   heading_style, ignored_style, not_style, passed_style, stacktrace_style,
@@ -21,7 +21,7 @@ import showtime/internal/reports/table.{
   AlignLeft, AlignLeftOverflow, AlignRight, Content, Separator, StyledContent,
   Table, align_table, to_string,
 }
-import showtime/tests/meta.{Meta}
+import showtime/tests/meta.{type Meta}
 
 type GleeUnitAssertionType {
   GleeUnitAssertEqual(message: String)
