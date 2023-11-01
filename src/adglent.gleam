@@ -1,7 +1,6 @@
 import simplifile.{FileError}
 import gleam/list
 import gleam/string
-import showtime
 
 pub type Example(a) {
   Example(input: String, answer: a)

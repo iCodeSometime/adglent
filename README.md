@@ -14,7 +14,7 @@
 Start a new gleam project for your AOC soluctions with `gleam new`. In the project folder run:
 
 ```sh
-gleam add adglent
+gleam add --dev adglent
 ```
 
 ## Usage
