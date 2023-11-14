@@ -11,16 +11,13 @@ import gleam/int
 @target(erlang)
 import gleam/option.{type Option, None, Some}
 @target(erlang)
-import gleam/result
-@target(erlang)
-import gleam/erlang/file
-@target(erlang)
 import gleam/erlang/atom.{type Atom}
 @target(erlang)
 import showtime/internal/common/test_suite.{
   type TestModule, type TestModuleHandler, type TestSuite, TestFunction,
   TestModule, TestSuite,
 }
+import simplifile
 
 // Module collector for erlang
 // Will search the test folder for files ending with _test and notify
@@ -40,7 +37,7 @@ fn collect_modules_in_folder(
   only_modules: Option(List(String)),
 ) {
   let module_prefix = get_module_prefix(path)
-  let assert Ok(files) = file.list_directory(path)
+  let assert Ok(files) = simplifile.list_contents(path)
   let test_modules_in_folder =
     files
     |> list.filter(string.ends_with(_, "_test.gleam"))
@@ -78,10 +75,7 @@ fn collect_modules_in_folder(
   let test_modules_in_subfolders =
     files
     |> list.map(fn(filename) { path <> "/" <> filename })
-    |> list.filter(fn(file) {
-      file.is_directory(file)
-      |> result.unwrap(False)
-    })
+    |> list.filter(fn(file) { simplifile.is_directory(file) })
     |> list.fold(
       [],
       fn(modules, subfolder) {
