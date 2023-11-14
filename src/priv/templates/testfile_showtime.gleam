@@ -1,7 +1,7 @@
 pub const template = "
 import gleam/list
 import showtime/tests/should
-import adglent.{Example}
+import adglent.{type Example, Example}
 import day{{ day }}/solve
 
 type Problem1AnswerType =
