@@ -103,7 +103,7 @@ fn create_file_if_not_present(
         simplifile.create_file(path)
         |> errors.map_messages("Created " <> path, "Could not create " <> path),
       )
-      simplifile.write(content, path)
+      simplifile.write(content, to: path)
       |> errors.map_messages("Wrote " <> path, "Could not write to " <> path)
     }
   }

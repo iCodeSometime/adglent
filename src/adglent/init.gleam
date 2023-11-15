@@ -37,7 +37,7 @@ pub fn main() {
           #("showtime", bool.to_string(use_showtime)),
         ],
       )
-      |> simplifile.write(aoc_toml_file)
+      |> simplifile.write(to: aoc_toml_file)
       |> errors.map_messages(
         "aoc.toml - written",
         "Error when writing aoc.toml",
@@ -65,7 +65,7 @@ pub fn main() {
   case use_showtime {
     True -> {
       template.render(test_main.template, [])
-      |> simplifile.write(test_main_file)
+      |> simplifile.write(to: test_main_file)
       |> errors.map_messages(
         "Wrote " <> test_main_file,
         "Could not write to " <> test_main_file,
@@ -89,7 +89,7 @@ pub fn main() {
         |> list.find(fn(line) { line == "aoc.toml" })
       case aoc_toml_ignored {
         Error(_) -> {
-          simplifile.append("\naoc.toml", ".gitignore")
+          simplifile.append("\naoc.toml", to: ".gitignore")
           |> errors.map_messages(
             ".gitignore written",
             "Error when writing .gitignore",
