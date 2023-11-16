@@ -1,5 +1,5 @@
 name = "adglent"
-version = "1.0.0-rc5"
+version = "1.0.0"
 
 description = "Advent of code helper - automating setup of tests, solution template and problem input"
 licences = ["Apache-2.0"]
