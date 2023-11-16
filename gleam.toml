@@ -1,5 +1,5 @@
 name = "adglent"
-version = "1.0.0"
+version = "1.0.1"
 
 description = "Advent of code helper - automating setup of tests, solution template and problem input"
 licences = ["Apache-2.0"]
@@ -14,7 +14,7 @@ gleam = ">= 0.32.0"
 
 [dependencies]
 gleam_stdlib = "~> 0.32"
-simplifile = "~> 0.3"
+simplifile = "0.4.0"
 gleam_hackney = "~> 1.2"
 gleam_http = "~> 3.5"
 tomerl = "~> 0.5"

@@ -37,7 +37,7 @@ fn collect_modules_in_folder(
   only_modules: Option(List(String)),
 ) {
   let module_prefix = get_module_prefix(path)
-  let assert Ok(files) = simplifile.list_contents(path)
+  let assert Ok(files) = simplifile.read_directory(path)
   let test_modules_in_folder =
     files
     |> list.filter(string.ends_with(_, "_test.gleam"))
