@@ -9,6 +9,19 @@
 
 > NOTE: `adglent` **only** supports `erlang` target (default) for Gleam.
 
+## Prerequisites
+
+`adglent` is written in `gleam` and runs and tests solutions written in Gleam. Read more about `gleam` at [gleam.run](https://gleam.run).
+
+The easiest way to install `gleam` is to use `asdf`:
+
+1. Install `asdf` according to the instructions at the [asdf website](https://asdf-vm.com/)
+2. Install the gleam asdf plugin: `asdf plugin-add gleam`
+3. Install the latest `asdf install gleam latest`
+4. Use the latest gleam version globally: `asdf global gleam latest`
+
+> HINT: `asdf` can manage multiple versions of gleam and the version can be set globally and also locally (`asdf local gleam <VERSION>`) to use a specific gleam version in a project.
+
 ## Installation
 
 Start a new gleam project for your AOC soluctions with `gleam new`. In the project folder run:
