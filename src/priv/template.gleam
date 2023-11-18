@@ -14,5 +14,5 @@ pub fn render(
       |> string.replace("{{ " <> name <> " }}", value)
     },
   )
-  |> string.trim
+  |> string.trim <> "\n"
 }

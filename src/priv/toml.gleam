@@ -1,47 +1,52 @@
-import gleam/dynamic.{type Decoder, type Dynamic}
+import tom
 import gleam/result
 
-pub type Toml
+pub type TomError {
+  TomParseError(error: tom.ParseError)
+  TomGetError(error: tom.GetError)
+}
 
 pub fn get_string(
   toml_content: String,
   key_path: List(String),
-) -> Result(String, Nil) {
-  use toml <- result.try(parse(toml_content))
-  toml
-  |> decode(key_path, dynamic.string)
+) -> Result(String, TomError) {
+  use toml <- result.try(
+    tom.parse(toml_content <> "\n")
+    |> result.map_error(TomParseError),
+  )
+  use value <- result.try(
+    tom.get_string(toml, key_path)
+    |> result.map_error(TomGetError),
+  )
+  Ok(value)
 }
 
 pub fn get_bool(
   toml_content: String,
   key_path: List(String),
-) -> Result(Bool, Nil) {
-  use toml <- result.try(parse(toml_content))
-  toml
-  |> decode(key_path, dynamic.string)
-  |> result.map(fn(bool_str) {
-    case bool_str {
-      "True" | "true" -> True
-      _ -> False
-    }
-  })
+) -> Result(Bool, TomError) {
+  use toml <- result.try(
+    tom.parse(toml_content <> "\n")
+    |> result.map_error(TomParseError),
+  )
+  use value <- result.try(
+    tom.get_bool(toml, key_path)
+    |> result.map_error(TomGetError),
+  )
+  Ok(value)
 }
 
-fn decode(
-  from toml: Toml,
-  get key_path: List(String),
-  expect decoder: Decoder(a),
-) -> Result(a, Nil) {
-  use item <- result.try(do_toml_get(toml, key_path))
-  item
-  |> decoder()
-  |> result.map_error(fn(_err) { Nil })
+pub fn get_int(
+  toml_content: String,
+  key_path: List(String),
+) -> Result(Int, TomError) {
+  use toml <- result.try(
+    tom.parse(toml_content <> "\n")
+    |> result.map_error(TomParseError),
+  )
+  use value <- result.try(
+    tom.get_int(toml, key_path)
+    |> result.map_error(TomGetError),
+  )
+  Ok(value)
 }
-
-@target(erlang)
-@external(erlang, "adglent_ffi", "toml_get")
-pub fn do_toml_get(toml: Toml, keys: List(String)) -> Result(Dynamic, Nil)
-
-@target(erlang)
-@external(erlang, "adglent_ffi", "toml_parse")
-pub fn parse(content: String) -> Result(Toml, Nil)

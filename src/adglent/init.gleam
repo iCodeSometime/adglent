@@ -10,9 +10,10 @@ import gleam/result
 import gleam/bool
 
 const aoc_toml_template = "
+version = {{ version }}
 year = \"{{ year }}\"
 session = \"{{ session }}\"
-showtime = \"{{ showtime }}\"
+showtime = {{ showtime }}
 "
 
 pub fn main() {
@@ -32,9 +33,14 @@ pub fn main() {
       template.render(
         aoc_toml_template,
         [
+          #("version", "2"),
           #("year", year),
           #("session", session),
-          #("showtime", bool.to_string(use_showtime)),
+          #(
+            "showtime",
+            bool.to_string(use_showtime)
+            |> string.lowercase,
+          ),
         ],
       )
       |> simplifile.write(to: aoc_toml_file)

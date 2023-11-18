@@ -26,6 +26,7 @@ pub fn main() {
     |> errors.print_error
     |> errors.assert_ok
 
+  let aoc_toml_version = toml.get_int(aoc_toml, ["version"])
   let year =
     toml.get_string(aoc_toml, ["year"])
     |> errors.map_error("Could not read \"year\" from aoc.toml")
@@ -36,11 +37,26 @@ pub fn main() {
     |> errors.map_error("Could not read \"session\" from aoc.toml")
     |> errors.print_error
     |> errors.assert_ok
-  let showtime =
-    toml.get_bool(aoc_toml, ["showtime"])
-    |> errors.map_error("Could not read \"showtime\" from aoc.toml")
-    |> errors.print_error
-    |> errors.assert_ok
+
+  let showtime = case aoc_toml_version {
+    Ok(2) -> {
+      toml.get_bool(aoc_toml, ["showtime"])
+      |> errors.map_error("Could not read \"showtime\" from aoc.toml")
+      |> errors.print_error
+      |> errors.assert_ok
+    }
+    _ ->
+      toml.get_string(aoc_toml, ["showtime"])
+      |> result.map(fn(bool_string) {
+        case bool_string {
+          "True" -> True
+          _ -> False
+        }
+      })
+      |> errors.map_error("Could not read \"showtime\" from aoc.toml")
+      |> errors.print_error
+      |> errors.assert_ok
+  }
 
   let test_folder = adglent.get_test_folder(day)
   let test_file = test_folder <> "/day" <> day <> "_test.gleam"
