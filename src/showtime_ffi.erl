@@ -1,6 +1,17 @@
 -module(showtime_ffi).
 
--export([run_test/4, functions/0, capture_output/1]).
+-export([run_test/4, functions/0, capture_output/1, gleam_error/1]).
+
+gleam_error(Value) ->
+    erlang:error(#{
+        gleam_error => let_assert,
+        message => <<"Assertion pattern match failed"/utf8>>,
+        value => Value,
+        module => <<"this/is/not/used"/utf8>>,
+        function => <<"gleam_error"/utf8>>,
+        % Not used
+        line => 0
+    }).
 
 start_output_capture(Capture) ->
     OldGroupLeader = group_leader(),

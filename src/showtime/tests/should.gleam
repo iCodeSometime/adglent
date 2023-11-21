@@ -73,39 +73,41 @@ pub fn be_false_meta(a: Bool, meta: Meta) {
   |> equal_meta(False, meta)
 }
 
+@external(erlang, "showtime_ffi", "gleam_error")
+fn gleam_error(value: Result(Nil, Assertion(a, b))) -> Nil
+
 pub fn evaluate(assertion) -> Nil {
   case assertion {
     Eq(a, b, _meta) ->
       case a == b {
-        True -> Ok(assertion)
+        True -> Nil
         False -> {
-          let assert Ok(_assertion) = Error(assertion)
+          gleam_error(Error(assertion))
         }
       }
     NotEq(a, b, _meta) ->
       case a != b {
-        True -> Ok(assertion)
+        True -> Nil
         False -> {
-          let assert Ok(_assertion) = Error(assertion)
+          gleam_error(Error(assertion))
         }
       }
     IsOk(a, _meta) ->
       case a {
-        Ok(_) -> Ok(assertion)
+        Ok(_) -> Nil
         Error(_) -> {
-          let assert Ok(_assertion) = Error(assertion)
+          gleam_error(Error(assertion))
         }
       }
     IsError(a, _meta) ->
       case a {
-        Error(_) -> Ok(assertion)
+        Error(_) -> Nil
         Ok(_) -> {
-          let assert Ok(_assertion) = Error(assertion)
+          gleam_error(Error(assertion))
         }
       }
     Fail(_meta) -> {
-      let assert Ok(_assertion) = Error(assertion)
+      gleam_error(Error(assertion))
     }
   }
-  Nil
 }
