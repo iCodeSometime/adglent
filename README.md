@@ -95,7 +95,7 @@ gleam test -- --modules=day<NUM>/day<NUM>_test
 > Example (test solution for 1st of December):
 >
 > ```sh
-> gleam test -- modules=day1/day1_test
+> gleam test -- --modules=day1/day1_test
 > ```
 
 ### Get the answer
