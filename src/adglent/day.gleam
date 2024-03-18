@@ -110,11 +110,11 @@ fn create_file_if_not_present(
   content: String,
   path: String,
 ) -> Result(String, String) {
-  case simplifile.is_file(path) {
-    True -> {
+  case simplifile.verify_is_file(path) {
+    Ok(True) -> {
       Ok(path <> " already exists - skipped")
     }
-    False -> {
+    Ok(False) | Error(_) -> {
       use _ <- result.try(
         simplifile.create_file(path)
         |> errors.map_messages("Created " <> path, "Could not create " <> path),

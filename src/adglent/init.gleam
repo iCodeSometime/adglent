@@ -30,19 +30,16 @@ pub fn main() {
   }
   case overwrite {
     True -> {
-      template.render(
-        aoc_toml_template,
-        [
-          #("version", "2"),
-          #("year", year),
-          #("session", session),
-          #(
-            "showtime",
-            bool.to_string(use_showtime)
+      template.render(aoc_toml_template, [
+        #("version", "2"),
+        #("year", year),
+        #("session", session),
+        #(
+          "showtime",
+          bool.to_string(use_showtime)
             |> string.lowercase,
-          ),
-        ],
-      )
+        ),
+      ])
       |> simplifile.write(to: aoc_toml_file)
       |> errors.map_messages(
         "aoc.toml - written",
@@ -66,6 +63,10 @@ pub fn main() {
     |> errors.print_error
     |> errors.assert_ok
 
+  let have_showtime_dependency =
+    toml.get_string(gleam_toml, ["dependencies", "showtime"])
+    |> result.is_ok
+
   let test_main_file = "test/" <> name <> "_test.gleam"
 
   case use_showtime {
@@ -82,8 +83,32 @@ pub fn main() {
   |> errors.print_result
   |> errors.assert_ok
 
-  case simplifile.is_file(".gitignore") {
-    True -> {
+  case use_showtime, have_showtime_dependency {
+    True, False -> {
+      gleam_toml
+      |> string.split("\n")
+      |> list.fold([], fn(lines, line) {
+        case line {
+          "[dependencies]" -> ["showtime = \"~> 0.2\"", line, ..lines]
+          _ -> [line, ..lines]
+        }
+      })
+      |> list.reverse
+      |> string.join("\n")
+      |> simplifile.write(to: "gleam.toml")
+      |> errors.map_messages(
+        "Wrote " <> "gleam.toml",
+        "Could not write to " <> "gleam.toml",
+      )
+    }
+    True, True -> Ok("Skip add of showtime dependency (already present)")
+    False, _ -> Ok("Skip add of showtime dependency (not configured)")
+  }
+  |> errors.print_result
+  |> errors.assert_ok
+
+  case simplifile.verify_is_file(".gitignore") {
+    Ok(True) -> {
       use gitignore <- result.try(
         simplifile.read(".gitignore")
         |> result.map_error(fn(err) {
@@ -104,7 +129,7 @@ pub fn main() {
         Ok(_) -> Ok(".gitignore - skipped (already configured)")
       }
     }
-    False -> Error("Could not find .gitignore")
+    Ok(False) | Error(_) -> Error("Could not find .gitignore")
   }
   |> errors.print_result
 }
